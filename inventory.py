@@ -58,8 +58,7 @@ class Inventory:
         """คืนรายชื่อสินค้าที่มีจำนวนคงเหลือน้อยกว่าหรือเท่ากับ threshold โดยเรียงตามชื่อ"""
         if threshold < 0:
             return []
-        matching_items = []
-        for name, item in self._items.items():
-            if item.quantity <= threshold:
-                matching_items.append(name)
-        return sorted(matching_items)
+        return sorted([
+            name for name, item in self._items.items()
+            if item.quantity <= threshold
+        ])

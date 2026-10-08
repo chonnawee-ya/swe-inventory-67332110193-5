@@ -111,3 +111,52 @@ def test_sell_non_existent_item_error():
     inv = Inventory()
     with pytest.raises(KeyError, match="ไม่พบสินค้า 'Ghost Item' ในระบบ"):
         inv.sell("Ghost Item", 1)
+
+
+# ==========================================
+# Phase 3: Comprehensive Coverage for Inventory
+# ==========================================
+
+def test_add_item_duplicate_name_error():
+    inv = Inventory()
+    inv.add_item("Relay Module", 10, 45.0)
+    with pytest.raises(ValueError, match="มีอยู่ในระบบแล้ว"):
+        inv.add_item("Relay Module", 5, 45.0)
+
+
+def test_restock_success():
+    inv = Inventory()
+    inv.add_item("Relay Module", 10, 45.0)
+    new_qty = inv.restock("Relay Module", 15)
+    assert new_qty == 25
+    assert inv._items["Relay Module"].quantity == 25
+
+
+def test_restock_non_existent_item_error():
+    inv = Inventory()
+    with pytest.raises(KeyError, match="ไม่พบสินค้า"):
+        inv.restock("Missing Item", 5)
+
+
+def test_restock_invalid_amount_error():
+    inv = Inventory()
+    inv.add_item("Relay Module", 10, 45.0)
+    with pytest.raises(ValueError, match="จำนวนที่เติมต้องมากกว่าศูนย์"):
+        inv.restock("Relay Module", 0)
+
+
+def test_get_total_value():
+    inv = Inventory()
+    assert inv.get_total_value() == 0.0
+    inv.add_item("Item 1", 2, 100.0)
+    inv.add_item("Item 2", 3, 50.0)
+    assert inv.get_total_value() == 350.0
+
+
+def test_inventory_item_validations():
+    with pytest.raises(ValueError, match="ชื่อสินค้าต้องไม่ว่างเปล่า"):
+        Inventory().add_item("   ", 1, 10.0)
+    with pytest.raises(ValueError, match="จำนวนสินค้าต้องไม่ติดลบ"):
+        Inventory().add_item("Item", -1, 10.0)
+    with pytest.raises(ValueError, match="ราคาต้องมากกว่าศูนย์"):
+        Inventory().add_item("Item", 1, 0.0)

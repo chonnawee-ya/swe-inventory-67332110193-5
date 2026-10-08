@@ -55,3 +55,59 @@ def test_low_stock_items_negative_threshold():
     inv.add_item("Item A", 0, 100.0)
     inv.add_item("Item B", 5, 200.0)
     assert inv.low_stock_items(-1) == []
+
+
+# ==========================================
+# Phase 2: Tests for sell() method (AI + Augmented Edge Cases)
+# ==========================================
+
+def test_sell_success_ai_baseline():
+    # กรณี AI ให้มา: ขายปกติ
+    inv = Inventory()
+    inv.add_item("Arduino Uno", 10, 450.0)
+    remaining = inv.sell("Arduino Uno", 3)
+    assert remaining == 7
+    assert inv._items["Arduino Uno"].quantity == 7
+
+
+def test_sell_boundary_exact_quantity():
+    # เสริม 1: ขายเท่ากับจำนวนที่เหลือทั้งหมดพอดี -> ต้องเหลือ 0
+    inv = Inventory()
+    inv.add_item("ESP32", 5, 250.0)
+    remaining = inv.sell("ESP32", 5)
+    assert remaining == 0
+    assert inv._items["ESP32"].quantity == 0
+
+
+def test_sell_invalid_zero_amount():
+    # เสริม 2: ขายจำนวน 0 -> ต้อง raise ValueError
+    inv = Inventory()
+    inv.add_item("Sensor", 10, 50.0)
+    with pytest.raises(ValueError, match="จำนวนที่ขายต้องมากกว่าศูนย์"):
+        inv.sell("Sensor", 0)
+    assert inv._items["Sensor"].quantity == 10
+
+
+def test_sell_invalid_negative_amount():
+    # เสริม 3: ขายจำนวนติดลบ -> ต้อง raise ValueError
+    inv = Inventory()
+    inv.add_item("Sensor", 10, 50.0)
+    with pytest.raises(ValueError, match="จำนวนที่ขายต้องมากกว่าศูนย์"):
+        inv.sell("Sensor", -3)
+    assert inv._items["Sensor"].quantity == 10
+
+
+def test_sell_insufficient_stock_error():
+    # เสริม 4: ขายเกินสต็อกคงเหลือ -> ต้อง raise ValueError และสต็อกคงเดิม
+    inv = Inventory()
+    inv.add_item("Raspberry Pi", 2, 1500.0)
+    with pytest.raises(ValueError, match="ไม่เพียงพอสำหรับการขาย"):
+        inv.sell("Raspberry Pi", 3)
+    assert inv._items["Raspberry Pi"].quantity == 2
+
+
+def test_sell_non_existent_item_error():
+    # เสริม 5: ขายสินค้าที่ไม่มีในคลัง -> ต้อง raise KeyError
+    inv = Inventory()
+    with pytest.raises(KeyError, match="ไม่พบสินค้า 'Ghost Item' ในระบบ"):
+        inv.sell("Ghost Item", 1)

@@ -1,6 +1,6 @@
 import pytest
-from inventory import Inventory
 
+from inventory import Inventory
 
 # ==========================================
 # Phase 1: TDD for low_stock_items(threshold)

@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Sequence, Tuple, Union
+from collections.abc import Sequence
 
 # ค่าคงที่อัตราภาษีและส่วนลด (Named Constants)
 TAX_RATE: float = 0.07
@@ -23,7 +23,7 @@ MEMBER_POINTS_PER_BAHT: int = 100  # 1 แต้มต่อ 100 บาท
 member_points: dict[str, int] = {}
 LOG: list[tuple[str | None, float]] = []
 
-ItemTuple = Union[Tuple[str, int, float], Sequence]
+ItemTuple = tuple[str, int, float] | Sequence
 
 
 def calculate_item_subtotal(quantity: int, unit_price: float) -> float:
@@ -43,7 +43,7 @@ def calculate_items_subtotal(items: Sequence[ItemTuple]) -> float:
     """คำนวณราคารวมของสินค้าทั้งหมดในคำสั่งซื้อ"""
     total = 0.0
     for item in items:
-        name, quantity, unit_price = item[0], item[1], item[2]
+        quantity, unit_price = item[1], item[2]
         total += calculate_item_subtotal(quantity, unit_price)
     return total
 
@@ -62,7 +62,11 @@ def apply_member_benefits(total: float, member: str | None) -> float:
     return discounted_total
 
 
-def apply_coupon_discount(total: float, coupon: str | None, current_date: datetime.date | None) -> float:
+def apply_coupon_discount(
+    total: float,
+    coupon: str | None,
+    current_date: datetime.date | None,
+) -> float:
     """คำนวณส่วนลดจากรหัสคูปองตามเงื่อนไข"""
     if coupon is None:
         return total

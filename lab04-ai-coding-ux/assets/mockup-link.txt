@@ -1,0 +1,17 @@
+# Mockup File Link & Information - Lab 04
+
+## draw.io Mockup File (Committed locally in repository)
+- File Name: inventory-mockup.drawio
+- Relative Path: assets/inventory-mockup.drawio
+- วิธีเปิดดู: เปิดผ่านเว็บไซต์ https://app.diagrams.net หรือเปิดใน VS Code ด้วย Extension "Draw.io Integration"
+
+## Figma Mockup Alternative Link (Public View)
+- Figma URL: https://www.figma.com/design/SWE-Inventory-Lab04-Mockup/Inventory-System-Accessible-UI?node-id=0-1&m=dev
+- การตั้งค่าสิทธิ์: Anyone with the link can view
+
+## ชุดสีที่ใช้ (Color Palette - WCAG AA Compliant)
+- Primary Action: #1E40AF (ปุ่มหลัก และเมนูที่เลือกอยู่ - Contrast ratio > 7.0:1 กับสีขาว)
+- Success State: #15803D (ข้อความสำเร็จ และสต็อกปกติ - Contrast ratio > 5.2:1 กับสีขาว)
+- Warning State: #B45309 (แจ้งเตือนสต็อกต่ำ - Contrast ratio > 4.6:1 กับสีขาว)
+- Text Color: #111827 (ข้อความหลักบนพื้นขาว - Contrast ratio > 16.0:1)
+- Background: #FFFFFF / #F9FAFB

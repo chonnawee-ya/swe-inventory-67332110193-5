@@ -4,3 +4,6 @@ extend-exclude = ["lab04-ai-coding-ux", "pricing_legacy.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.coverage.run]
+omit = ["pricing_legacy.py", "lab04-ai-coding-ux/*"]

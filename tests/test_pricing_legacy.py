@@ -1,7 +1,6 @@
 import datetime
 import pytest
-import pricing_legacy
-from pricing_legacy import calc, member_points, LOG
+from pricing import calc, member_points, LOG
 
 
 @pytest.fixture(autouse=True)
